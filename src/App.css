@@ -1,0 +1,150 @@
+/* App.css - Styles for all pages */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f2f4f7;
+}
+
+.app {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+nav button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+nav button:hover {
+  background-color: #0056b3;
+}
+
+.page {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.page h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.page input,
+.page textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+}
+
+.page input:focus,
+.page textarea:focus {
+  border-color: #007bff;
+}
+
+.page textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.page button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #28a745;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.page button:hover {
+  background-color: #218838;
+}
+
+pre {
+  background-color: #f0f0f0;
+  padding: 15px;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.message {
+  margin-top: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.message.success {
+  color: green;
+}
+
+.message.error {
+  color: red;
+}
+
+
+
+
+
+
+.page {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.inputs input {
+  margin: 5px;
+  padding: 8px;
+  width: 200px;
+}
+
+.buttons button {
+  margin: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.candidates-container {
+  margin-top: 10px;
+}
+
+.candidate-card {
+  padding: 10px;
+  background: #fff;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.05);
+}
+
+.candidate-card h4 {
+  margin: 0 0 5px 0;
+}
+
+.candidate-card p {
+  margin: 2px 0;
+}

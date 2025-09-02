@@ -1,5 +1,5 @@
 // import React, { useState } from 'react';
-// const API_BASE = 'http://localhost:5000/api';
+// const API_BASE = 'https://resume-analyser-backend-4.onrender.com/api';
 
 // export default function GetCandidates() {
 //   const [jobId, setJobId] = useState('');

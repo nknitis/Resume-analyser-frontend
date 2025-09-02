@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const API_BASE = "https://resume-analyser-backend-2gcm.onrender.com/api";
+const API_BASE = "https://resume-analyser-backend-4.onrender.com/api";
 
 export default function AddJob() {
   const [jobId, setJobId] = useState("");

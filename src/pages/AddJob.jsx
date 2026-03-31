@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-
-const API_BASE = "https://resume-analyser-backend-4.onrender.com/api";
+import { getAuthHeader } from "../config/auth";
+import { API_BASE } from "../config/api";
 
 export default function AddJob() {
   const [jobId, setJobId] = useState("");
@@ -8,25 +8,40 @@ export default function AddJob() {
   const [message, setMessage] = useState("");
 
   const handleAddJob = async () => {
-    if (!jobId || !description) {
+    const cleanJobId = jobId.trim();
+    const cleanDescription = description.trim();
+
+    if (!cleanJobId || !cleanDescription) {
       setMessage("Please fill both Job ID and Description");
       return;
     }
 
     try {
+      const payload = {
+        jobId: cleanJobId,
+        description: cleanDescription,
+        jobDescription: cleanDescription,
+      };
+
       const res = await fetch(`${API_BASE}/jobs/create`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jobId, description }),
+        headers: {
+          "Content-Type": "application/json",
+          ...getAuthHeader(),
+        },
+        body: JSON.stringify(payload),
       });
+
       const data = await res.json();
-      if (res.ok) {
-        setMessage("Job added successfully!");
-        setJobId("");
-        setDescription("");
-      } else {
+
+      if (!res.ok) {
         setMessage(`Error: ${data.message || "Failed to add job"}`);
+        return;
       }
+
+      setMessage(data.message || "Job added successfully!");
+      setJobId("");
+      setDescription("");
     } catch (err) {
       console.error(err);
       setMessage("Failed to add job due to network error");

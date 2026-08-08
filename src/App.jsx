@@ -124,7 +124,7 @@ export default function App() {
         />
       </Routes>
       <footer className="footer">
-        <p>&copy; 2024 Resume Analyzer. All rights reserved.</p>
+        <p>&copy; 2025 Resume Analyzer. All rights reserved.</p>
       </footer>
     </div>
   );

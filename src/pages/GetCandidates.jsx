@@ -26,7 +26,7 @@ async function readResponse(res) {
 
 export default function GetCandidates() {
   const [jobId, setJobId] = useState("");
-  const [topLimit, setTopLimit] = useState(5);
+  const [topLimit, setTopLimit] = useState(20);
   const [allCandidates, setAllCandidates] = useState([]);
   const [topCandidates, setTopCandidates] = useState([]);
   const [selectedShortlisted, setSelectedShortlisted] = useState(new Set());
@@ -36,6 +36,7 @@ export default function GetCandidates() {
   const [updatingCandidateId, setUpdatingCandidateId] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [pipeline, setPipeline] = useState(null);
 
   const mergeShortlistState = (candidates, previousSelection) => {
     const next = new Set(previousSelection);
@@ -106,6 +107,7 @@ export default function GetCandidates() {
       const data = await readResponse(res);
       const candidates = normalizeCandidates(data);
       setTopCandidates(candidates);
+      setPipeline(data?.pipeline || null);
       setSelectedShortlisted((prev) => mergeShortlistState(candidates, prev));
       if (candidates.length === 0) setSuccess("No candidates found for this Job ID yet.");
     } catch (err) {
@@ -208,7 +210,11 @@ export default function GetCandidates() {
           </div>
           <p><strong>Email:</strong> {cand.email || "-"}</p>
           <p><strong>Phone:</strong> {cand.phone || "-"}</p>
-          <p><strong>Match Score:</strong> {getScore(cand)} / 100</p>
+          <p><strong>Final AI Score:</strong> {getScore(cand)} / 100</p>
+          <p><strong>Keyword Score:</strong> {cand.keywordScore ?? "-"} / 100</p>
+          <p><strong>Semantic Score:</strong> {cand.semanticScore ?? "-"} / 100</p>
+          {Array.isArray(cand.strengths || cand.aiAnalysis?.strengths) && (cand.strengths || cand.aiAnalysis?.strengths).length > 0 && <p><strong>Strengths:</strong> {(cand.strengths || cand.aiAnalysis?.strengths).join(", ")}</p>}
+          {cand.aiAnalysis?.reasoning && <p><strong>AI Reasoning:</strong> {cand.aiAnalysis.reasoning}</p>}
           <p><strong>Summary:</strong> {cand.summary || cand.extractedText || "-"}</p>
           {missingSkills.length > 0 && <p><strong>Missing / weaker skills:</strong> {missingSkills.join(", ")}</p>}
           {cand.rejectionReason && <p><strong>Rejection reason:</strong> {cand.rejectionReason}</p>}
@@ -224,7 +230,7 @@ export default function GetCandidates() {
       <h2>Get Candidates</h2>
       <div className="inputs">
         <input placeholder="Job ID" value={jobId} onChange={(e) => setJobId(e.target.value)} />
-        <input type="number" placeholder="Top X" value={topLimit} min={1} onChange={(e) => setTopLimit(Number(e.target.value) || 1)} />
+        <input type="number" placeholder="Final candidates (max 20)" value={topLimit} min={1} max={20} onChange={(e) => setTopLimit(Number(e.target.value) || 1)} />
       </div>
       <div className="buttons">
         <button onClick={fetchAll} disabled={loadingAll || loadingTop || sendingEmails}>
@@ -242,6 +248,11 @@ export default function GetCandidates() {
 
       {error && <p className="error-message">{error}</p>}
       {success && <p className="success-message">{success}</p>}
+      {pipeline && (
+        <div className="pipeline-summary">
+          <strong>Screening pipeline:</strong> {pipeline.totalCandidates} resumes → {pipeline.keywordStage} keyword candidates → {pipeline.semanticStage} semantic/RAG candidates → {pipeline.finalStage} Gemini-analyzed candidates
+        </div>
+      )}
 
       <h3>All Candidates ({allCandidates.length})</h3>
       <div className="candidates-container">{renderCandidates(allCandidates)}</div>
